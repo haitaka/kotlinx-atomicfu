@@ -11,6 +11,8 @@ typedef struct lock_support {
 
 typedef struct mutex_node {
     lock_support_t* mutex;
+    int nestedLocks;
+    int waiters;
     struct mutex_node* next;
 } mutex_node_t;
 
@@ -24,6 +26,8 @@ lock_support_t* lock_support_init() {
 
 mutex_node_t* mutex_node_init(mutex_node_t* mutexNode) {
     mutexNode->mutex = lock_support_init();
+    mutexNode->nestedLocks = 0;
+    mutexNode->waiters = 0;
     mutexNode->next = NULL;
     return mutexNode;
 }
